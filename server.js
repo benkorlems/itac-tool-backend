@@ -1,25 +1,37 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const morgan = require("morgan");
+const passport = require("passport");
 
+// require Routes
 const users = require("./routes/api/users");
 const profile = require("./routes/api/profile");
 const posts = require("./routes/api/posts");
 
+// initialize express app
 const app = express();
-//db config
+
+// apply middlewares
+app.use(passport.initialize());
+//app.use(morgan("combined"));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+// db config
 const db = require("./config/keys").mongoURI;
+// passport config
+require("./config/passport")(passport);
 
 mongoose
   .connect(db)
   .then(() => console.log("Mongodb connected"))
   .catch(err => console.log(err));
 
-app.get("/", (req, res) => res.send("Hello"));
-
 //use Routes
-app.use("/routes/api/users", users);
-app.use("/routes/api/profile", profile);
-app.use("/routes/api/posts", posts);
+app.use("/api/users", users);
+app.use("/api/profile", profile);
+app.use("/api/posts", posts);
 
 const port = process.env.PORT || 5000;
 
