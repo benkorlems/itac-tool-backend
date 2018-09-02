@@ -19,7 +19,6 @@ router.get("/test", (req, res) => {
 
 router.get("/ont_status", (req, res) => {
   let serial = req.query.serial;
-  console.log(serial);
   create_response(serial, req, res);
 });
 
