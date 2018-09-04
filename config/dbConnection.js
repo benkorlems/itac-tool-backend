@@ -23,8 +23,11 @@ const ftth_dynamic_mapsDb = {
   database: "csms"
 };
 
+const mongo_url = "mongodb://62.173.38.13:27017/fos_traps_db";
+
 module.exports = {
   billingDbConn: billingDbConn,
   ftthCliDb: ftthCliDb,
-  ftth_dynamic_mapsDb: ftth_dynamic_mapsDb
+  ftth_dynamic_mapsDb: ftth_dynamic_mapsDb,
+  mongo_url: mongo_url
 };

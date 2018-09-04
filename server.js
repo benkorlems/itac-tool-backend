@@ -9,6 +9,7 @@ const profile = require("./routes/api/profile");
 const posts = require("./routes/api/posts");
 const billing = require("./routes/api/billing");
 const ont = require("./routes/api/ont");
+const alarms = require("./routes/api/alarms");
 
 // initialize express app
 const app = express();
@@ -32,7 +33,6 @@ require("./config/passport")(passport);
   .then(() => console.log("Mongodb connected"))
   .catch(err => console.log(err));
  * 
-
 billingDbConn.connect(err => {
   if (err) {
     throw err;
@@ -46,6 +46,7 @@ app.use("/api/profile", profile);
 app.use("/api/posts", posts);
 app.use("/api/billing", billing);
 app.use("/api/ont", ont);
+app.use("/api/alarms", alarms);
 
 const port = process.env.PORT || 5000;
 
