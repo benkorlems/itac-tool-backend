@@ -152,13 +152,11 @@ const create_response = (serial, req, res) => {
     query_for_public_ip: `select * from ftth_dynamic_maps where uid like "%${serial}%" limit 1`,
     query_for_ont_data_summary: `select * from ont_data_summary where ActOnxSn="${serial}" order by lastpoll desc limit 1 `
   };
-  let promise0 = mysql
-    .createConnection(ftthCliDb)
-    .then(conn => conn.query(queries.query_for_ont_data_summary));
+
   let promise1 = mysql
     .createConnection(ftth_dynamic_mapsDb)
     .then(conn => conn.query(queries.query_for_public_ip));
-  Promise.all([promise0, promise1])
+  Promise.all([promise1])
     .then(values => {
       res.json(format_response(values));
     })
