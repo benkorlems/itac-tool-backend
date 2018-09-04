@@ -30,7 +30,7 @@ router.get("/all_billing", (req, res) => {
       }
       latest_table = result[0].trecord;
 
-      let billing_query = `select * ${latest_table} left join contact_info on ${latest_table}.agent_custid = contact_info.agent_custid`;
+      let billing_query = `select DISTINCT ${latest_table}.finger, contact_info.address1, contact_info.agent_custid, ${latest_table}.last_bill, ${latest_table}.bill, ${latest_table}.susp, ${latest_table}.pkg, contact_info.username, contact_info.phone1, ${latest_table}.totalbytes_threshold, ${latest_table}.totalbytes FROM ${latest_table} left join contact_info on ${latest_table}.username = contact_info.username limit 70`;
       billingDbConn.query(billing_query, (err, result, fields) => {
         if (err) {
           return res.status(400).json({ err });
