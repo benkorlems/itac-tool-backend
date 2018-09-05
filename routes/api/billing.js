@@ -67,6 +67,7 @@ router.get("/search_billing", (req, res) => {
             result[i].totalbytes_threshold
           );
           result[i].totalbytes = bytesToSize(result[i].totalbytes);
+          result[i]["latest_table"] = latest_table;
         }
         res.json(result);
       });
