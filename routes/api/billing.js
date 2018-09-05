@@ -4,6 +4,7 @@ const router = express.Router();
 
 // Import the db connections
 const { billingDbConn, ftthCliDbConn } = require("../../config/dbConnection");
+const bytesToSize = require("../../utils/billing_query");
 
 // @route   GET api/profile/test
 // @desc    Tests users route
@@ -59,6 +60,13 @@ router.get("/search_billing", (req, res) => {
       billingDbConn.query(billing_query, (err, result, fields) => {
         if (err) {
           return res.status(400).json({ err });
+        }
+        //this loop converts the totalbytes fields to Human readable format
+        for (let i = 0; i < result.length; i++) {
+          result[i].totalbytes_threshold = bytesToSize(
+            result[i].totalbytes_threshold
+          );
+          result[i].totalbytes = bytesToSize(result[i].totalbytes);
         }
         res.json(result);
       });

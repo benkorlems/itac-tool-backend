@@ -41,7 +41,7 @@ router.get("/get_alarms", (req, res) => {
         "0.slot": slot,
         "0.port": port,
         _id: {
-          $gt: ObjectId.createFromTime(Date.now() / 1000 - 24 * 60 * 60)
+          $gt: ObjectId.createFromTime(Date.now() / 1000 - 336 * 60 * 60)
         }
       };
       dbo

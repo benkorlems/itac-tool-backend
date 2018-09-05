@@ -25,9 +25,12 @@ const format_response = values => {
     olt: "",
     slot: "",
     port: "",
-    ont: ""
+    ont: "",
+    last_poll: ""
   };
+
   let olt_status_values = values[0][0];
+  result_object.last_poll = olt_status_values.lastpoll;
   if (olt_status_values) {
     switch (olt_status_values.OnxNeStatus) {
       case "0":
