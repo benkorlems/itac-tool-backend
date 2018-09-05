@@ -138,10 +138,12 @@ const format_response = values => {
     let ip_values = values[1][0];
     result_object["public_ip"] = ip_values.ipaddress;
   }
-  result_object["olt"] = olt_status_values.olt;
-  result_object["slot"] = olt_status_values.solt;
-  result_object["port"] = olt_status_values.port;
-  result_object["ont"] = olt_status_values.ont;
+  if (values[1][0]) {
+    result_object["olt"] = olt_status_values.olt;
+    result_object["slot"] = olt_status_values.solt;
+    result_object["port"] = olt_status_values.port;
+    result_object["ont"] = olt_status_values.ont;
+  }
 
   return result_object;
 };
@@ -153,16 +155,19 @@ const create_response = (serial, req, res) => {
     query_for_ont_data_summary: `select * from ont_data_summary where ActOnxSn="${serial}" order by lastpoll desc limit 1 `
   };
 
+  let promise0 = mysql
+    .createConnection(ftthCliDb)
+    .then(conn => conn.query(queries.query_for_ont_data_summary));
   let promise1 = mysql
     .createConnection(ftth_dynamic_mapsDb)
     .then(conn => conn.query(queries.query_for_public_ip));
-  Promise.all([promise1])
+  Promise.all([promise0, promise1])
     .then(values => {
       res.json(format_response(values));
     })
     .catch(error => {
       //logs out the error
-      console.log(error);
+      throw error;
     });
 };
 
