@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const morgan = require("morgan");
+//const morgan = require("morgan");
 const passport = require("passport");
 const cors = require("cors");
 // require Routes
@@ -17,7 +17,7 @@ const app = express();
 // apply middlewares
 app.use(passport.initialize());
 // apply morgan logger middleware
-app.use(morgan("combined"));
+//app.use(morgan("combined"));
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
