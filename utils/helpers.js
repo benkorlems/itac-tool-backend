@@ -1,5 +1,7 @@
 // Require the mysql promise
 const mysql = require("promise-mysql");
+// Require momentjs
+const moment = require("moment");
 
 // Require the ftthcliDB details
 const { ftthCliDb, ftth_dynamic_mapsDb } = require("../config/dbConnection");
@@ -13,24 +15,31 @@ const format_response = values => {
     voice_ip: "",
     vlan: "",
     sync_state: "",
-    rx_power: "",
     public_ip: "",
     provisoned_bandwidth: "",
     olt: "",
     slot: "",
     port: "",
-    mst: "",
     ont: "",
     ont_net_status: "",
-    olt: "",
-    slot: "",
-    port: "",
-    ont: "",
     last_poll: ""
   };
 
   let olt_status_values = values[0][0];
-  result_object.last_poll = olt_status_values.lastpoll;
+
+  let last_poll = parseInt(olt_status_values.lastpoll);
+  last_poll = moment.unix(last_poll).format("MMMM Do YYYY, h:mm:ss a");
+  if (last_poll == "Invalid date") {
+    last_poll = "Not Available";
+  }
+  result_object.last_poll = last_poll;
+  result_object.olt_rx_power = olt_status_values.RxPowerOlt;
+  result_object.rx_power = olt_status_values.RxPowerOnx;
+  result_object.olt = olt_status_values.olt;
+  result_object.slot = olt_status_values.slot;
+  result_object.port = olt_status_values.port;
+  result_object.ont = olt_status_values.ont;
+
   if (olt_status_values) {
     switch (olt_status_values.OnxNeStatus) {
       case "0":
@@ -141,12 +150,6 @@ const format_response = values => {
     let ip_values = values[1][0];
     result_object["public_ip"] = ip_values.ipaddress;
   }
-  if (values[1][0]) {
-    result_object["olt"] = olt_status_values.olt;
-    result_object["slot"] = olt_status_values.solt;
-    result_object["port"] = olt_status_values.port;
-    result_object["ont"] = olt_status_values.ont;
-  }
 
   return result_object;
 };
@@ -160,12 +163,27 @@ const create_response = (serial, req, res) => {
 
   let promise0 = mysql
     .createConnection(ftthCliDb)
-    .then(conn => conn.query(queries.query_for_ont_data_summary));
+    .then(function(conn) {
+      var result = conn.query(queries.query_for_ont_data_summary);
+      conn.end();
+      return result;
+    })
+    .catch(err => {
+      throw err;
+    });
   let promise1 = mysql
     .createConnection(ftth_dynamic_mapsDb)
-    .then(conn => conn.query(queries.query_for_public_ip));
+    .then(function(conn) {
+      var result = conn.query(queries.query_for_public_ip);
+      conn.end();
+      return result;
+    })
+    .catch(err => {
+      throw err;
+    });
   Promise.all([promise0, promise1])
     .then(values => {
+      //res.json(values[0][0]);
       res.json(format_response(values));
     })
     .catch(error => {
