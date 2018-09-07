@@ -8,37 +8,24 @@ const { ftthCliDb, ftth_dynamic_mapsDb } = require("../config/dbConnection");
 
 const format_response = values => {
   result_object = {
-    admin_state: "",
-    operational_state: "",
-    olt_rx_power: "",
-    rx_power: "",
-    voice_ip: "",
-    vlan: "",
-    sync_state: "",
-    public_ip: "",
-    provisoned_bandwidth: "",
-    olt: "",
-    slot: "",
-    port: "",
-    ont: "",
-    ont_net_status: "",
-    last_poll: ""
+    admin_state: "Unavailable",
+    operational_state: "Unavailable",
+    olt_rx_power: "Unavailable",
+    rx_power: "Unavailable",
+    voice_ip: "Unavailable",
+    vlan: "Unavailable",
+    sync_state: "Unavailable",
+    public_ip: "Unavailable",
+    provisoned_bandwidth: "Unavailable",
+    olt: "Unavailable",
+    slot: "Unavailable",
+    port: "Unavailable",
+    ont: "Unavailable",
+    ont_net_status: "Unavailable",
+    last_poll: "Unavailable"
   };
 
   let olt_status_values = values[0][0];
-
-  let last_poll = parseInt(olt_status_values.lastpoll);
-  last_poll = moment.unix(last_poll).format("MMMM Do YYYY, h:mm:ss a");
-  if (last_poll == "Invalid date") {
-    last_poll = "Not Available";
-  }
-  result_object.last_poll = last_poll;
-  result_object.olt_rx_power = olt_status_values.RxPowerOlt;
-  result_object.rx_power = olt_status_values.RxPowerOnx;
-  result_object.olt = olt_status_values.olt;
-  result_object.slot = olt_status_values.slot;
-  result_object.port = olt_status_values.port;
-  result_object.ont = olt_status_values.ont;
 
   if (olt_status_values) {
     switch (olt_status_values.OnxNeStatus) {
@@ -145,6 +132,22 @@ const format_response = values => {
         result_object["operational_state"] = "Unknown";
         break;
     }
+
+    let last_poll = "";
+    last_poll = moment
+      .unix(parseInt(olt_status_values.lastpoll))
+      .format("MMMM Do YYYY, h:mm:ss a");
+    if (last_poll == "Invalid date") {
+      last_poll = "Not Available";
+    }
+
+    result_object.last_poll = last_poll;
+    result_object.olt_rx_power = olt_status_values.RxPowerOlt;
+    result_object.rx_power = olt_status_values.RxPowerOnx;
+    result_object.olt = olt_status_values.olt;
+    result_object.slot = olt_status_values.slot;
+    result_object.port = olt_status_values.port;
+    result_object.ont = olt_status_values.ont;
   }
   if (values[1][0]) {
     let ip_values = values[1][0];
@@ -183,7 +186,7 @@ const create_response = (serial, req, res) => {
     });
   Promise.all([promise0, promise1])
     .then(values => {
-      //res.json(values[0][0]);
+      //res.json(values);
       res.json(format_response(values));
     })
     .catch(error => {
