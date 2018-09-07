@@ -55,7 +55,7 @@ router.get("/search_billing", (req, res) => {
       let search_term = req.query.search_term;
       console.log(search_term);
 
-      let billing_query = `SELECT ${latest_table}.finger, contact_info.address1, contact_info.agent_custid, ${latest_table}.last_bill, ${latest_table}.bill, ${latest_table}.susp, ${latest_table}.pkg, contact_info.username, contact_info.phone1, ${latest_table}.totalbytes_threshold, ${latest_table}.totalbytes FROM ${latest_table} LEFT JOIN contact_info on ${latest_table}.username=contact_info.username WHERE ${latest_table}.finger LIKE "%${search_term}%" OR ${latest_table}.username LIKE "%${search_term}%" LIMIT 150`;
+      let billing_query = `SELECT ${latest_table}.finger, contact_info.address1, contact_info.agent_custid, ${latest_table}.last_bill, ${latest_table}.bill, ${latest_table}.susp, ${latest_table}.pkg, contact_info.username, contact_info.phone1, ${latest_table}.totalbytes_threshold, ${latest_table}.totalbytes FROM ${latest_table} LEFT JOIN contact_info on ${latest_table}.username=contact_info.username WHERE ${latest_table}.finger LIKE "%${search_term}%" OR ${latest_table}.username LIKE "%${search_term}%" LIMIT 100`;
 
       billingDbConn.query(billing_query, (err, result, fields) => {
         if (err) {
