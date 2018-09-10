@@ -85,6 +85,10 @@ array-unique@^0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/array-unique/-/array-unique-0.3.2.tgz#a894b75d4bc4f6cd679ef3244a9fd8f46ae2d428"
 
+asn1-ber@*:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/asn1-ber/-/asn1-ber-1.0.9.tgz#0f48f709d9f9a953e18cfe2b8a62a6c926c5451a"
+
 assign-symbols@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/assign-symbols/-/assign-symbols-1.0.0.tgz#59667f41fadd4f20ccbc2bb96b8d4f7f78ec0367"
@@ -1430,6 +1434,12 @@ needle@^2.2.1:
 negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
+
+net-snmp@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/net-snmp/-/net-snmp-1.2.4.tgz#9db6dd9338e24a1eff0ce2cdb530ee77c1c9fd61"
+  dependencies:
+    asn1-ber "*"
 
 node-pre-gyp@^0.10.0:
   version "0.10.3"
