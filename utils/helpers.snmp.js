@@ -16,6 +16,42 @@ const bin2dec = bin => {
   return parseInt(bin, 2).toString(10);
 };
 
+// Call back function for the snmp walk method
+const doneCb = error => {
+  if (error) console.error(error.toString());
+};
+
+const feedCb_type1 = varbinds => {
+  let oid;
+  let value;
+  for (let i = 0; i < varbinds.length; i++) {
+    if (snmp.isVarbindError(varbinds[i])) {
+      console.error(snmp.varbindError(varbinds[i]));
+    } else {
+      // console.log(varbinds[i].oid + "=" + varbinds[i].value);
+      oid = varbinds[i].oid;
+      value = varbinds[i].value;
+      process_snmp_data_type1(oid, value);
+    }
+  }
+};
+
+// feedCb for type2
+const feedCb_type2 = varbinds => {
+  let oid;
+  let value;
+  for (let i = 0; i < varbinds.length; i++) {
+    if (snmp.isVarbindError(varbinds[i])) {
+      console.error(snmp.varbindError(varbinds[i]));
+    } else {
+      // console.log(varbinds[i].oid + "=" + varbinds[i].value);
+      oid = varbinds[i].oid;
+      value = varbinds[i].value;
+      process_snmp_data_type2(oid, value);
+    }
+  }
+};
+
 /**
  * This function takes the oid & value from snmp walk and
  * returns json obj for type1 indexes
@@ -98,4 +134,8 @@ const process_snmp_data_type2 = (oid, value) => {
   console.log(result_obj);
 };
 
-module.exports = { process_snmp_data_type1, process_snmp_data_type2 };
+module.exports = {
+  doneCb,
+  feedCb_type1,
+  feedCb_type2
+};
