@@ -2056,6 +2056,10 @@ snapdragon@^0.8.1:
     source-map-resolve "^0.5.0"
     use "^3.1.0"
 
+snmp-native@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/snmp-native/-/snmp-native-1.1.2.tgz#3b24b25963bd4c6fcf739cecb7b96963332b3aba"
+
 source-map-resolve@^0.5.0:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/source-map-resolve/-/source-map-resolve-0.5.2.tgz#72e2cc34095543e43b2c62b2c4c10d4a9054f259"

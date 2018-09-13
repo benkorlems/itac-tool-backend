@@ -11,7 +11,7 @@ const billing = require("./routes/api/billing");
 const ont = require("./routes/api/ont");
 const alarms = require("./routes/api/alarms");
 
-// initialize express app
+// initialize express appi
 const app = express();
 
 // apply middlewares
